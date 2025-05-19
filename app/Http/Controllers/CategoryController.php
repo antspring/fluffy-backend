@@ -5,23 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Models\Product\Category;
+use App\Repositories\Category\Contracts\CategoryRepositoryInterface;
 
 class CategoryController extends Controller
 {
+    public function __construct(private readonly CategoryRepositoryInterface $categoryRepository)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return $this->categoryRepository->all();
     }
 
     /**
@@ -29,7 +26,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        return $this->categoryRepository->create($request->validated());
     }
 
     /**
@@ -37,15 +34,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        //
+        return $category;
     }
 
     /**
@@ -53,7 +42,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        return $category->update($request->validated());
     }
 
     /**
@@ -61,6 +50,6 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        return $category->delete();
     }
 }
