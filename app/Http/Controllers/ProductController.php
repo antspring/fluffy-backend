@@ -19,7 +19,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return $this->productService->all();
+        return $this->productService->all()->toResourceCollection();
     }
 
     /**
@@ -27,7 +27,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        return $this->productService->create($request);
+        return $this->productService->create($request)->toResource();
     }
 
     /**
@@ -35,7 +35,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return $product;
+        return $product->toResource();
     }
 
     /**

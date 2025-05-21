@@ -4,6 +4,8 @@ namespace App\Services\Product\Implementations;
 
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
+use App\Models\Product\Category;
+use App\Models\Product\Ingredient;
 use App\Models\Product\Product;
 use App\Repositories\Product\Contracts\ProductRepositoryInterface;
 use App\Services\Product\Contracts\ProductServiceInterface;
@@ -30,20 +32,39 @@ class ProductService implements ProductServiceInterface
         $filename = $request->file('image')->store('images/products');
         $data = $request->validated();
         $data['image'] = $filename;
-        return $this->productRepository->create($data);
+
+        $product = $this->productRepository->create($data);
+
+        $ingredients = json_decode($request->input('ingredients'), true);
+
+        $missing = $this->syncIngredients($product, $ingredients);
+
+        if ($missing === true) {
+            return $product;
+        }
+
+        return response()->json(['message' => 'Ingredient not created', 'missing' => $missing]);
     }
 
     public function update(Product $product, UpdateProductRequest $request)
     {
+        $data = $request->validated();
+
         if ($request->hasFile('image')) {
             $filename = $request->file('image')->store('images/products');
-            $data = $request->validated();
             $data['image'] = $filename;
             Storage::delete($product->image);
+        }
+
+        $ingredients = json_decode($request->input('ingredients'), true);
+
+        $missing = $this->syncIngredients($product, $ingredients);
+
+        if ($missing === true) {
             return $product->update($data);
         }
 
-        return $product->update($request->validated());
+        return response()->json(['message' => 'Ingredient not created', 'missing' => $missing]);
     }
 
     public function delete(Product $product)
@@ -55,5 +76,32 @@ class ProductService implements ProductServiceInterface
     public function where($column, $value)
     {
         return $this->productRepository->where($column, $value);
+    }
+
+    private function syncIngredients(Product $product, array $ingredients): array|bool
+    {
+        if (!empty($ingredients)) {
+            $ids = collect($ingredients)->pluck('id')->all();
+            $existingIds = Ingredient::whereIn('id', $ids)->pluck('id')->all();
+
+            $missing = array_values(array_diff($ids, $existingIds));
+
+            if (!empty($missing)) {
+                return $missing;
+            }
+
+            $sync = [];
+
+            foreach ($ingredients as $ingredient) {
+                $sync[$ingredient['id']] = [
+                    'quantity' => $ingredient['quantity'],
+                    'unit' => $ingredient['unit'],
+                ];
+            }
+
+            $product->ingredients()->sync($sync);
+        }
+
+        return true;
     }
 }
