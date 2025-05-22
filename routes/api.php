@@ -19,4 +19,5 @@ Route::prefix('/v1/')->group(function () {
     Route::post('send-code', [AuthController::class, 'sendCode']);
 
     Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
 });

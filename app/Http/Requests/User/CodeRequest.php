@@ -22,7 +22,7 @@ class CodeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone_number' => 'required|regex:/^\d{10,15}$/|unique:users,phone_number',
+            'phone_number' => 'required|regex:/^\d{10,15}$/',
         ];
     }
 }
