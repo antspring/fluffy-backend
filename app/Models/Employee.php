@@ -12,11 +12,14 @@ class Employee extends Authenticatable
 
     protected $fillable = [
         'login',
+        'password',
     ];
 
     protected $hidden = [
         'password',
     ];
+
+    protected $guard_name = 'web';
 
     protected function casts(): array
     {
