@@ -13,9 +13,10 @@ use App\Repositories\User\Implementations\UserRepository;
 use App\Services\Product\Contracts\ProductServiceInterface;
 use App\Services\Product\Implementations\ProductService;
 use App\Services\SMSender\Contracts\SMSenderServiceInterface;
+use App\Services\SMSender\Implementations\SMSenderFakeService;
 use App\Services\SMSender\Implementations\SMSenderService;
 use App\Services\User\Contracts\UserServiceInterface;
-use App\Services\User\Implementations\Implementations\UserService;
+use App\Services\User\Implementations\UserService;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,8 +29,17 @@ class BindServiceProvider extends ServiceProvider implements DeferrableProvider
         ProductServiceInterface::class => ProductService::class,
         UserRepositoryInterface::class => UserRepository::class,
         UserServiceInterface::class => UserService::class,
-        SMSenderServiceInterface::class => SMSenderService::class,
     ];
+
+    public function register(): void
+    {
+        $this->app->bind(SMSenderServiceInterface::class, function () {
+            return match (config('sms.driver')) {
+                'fake' => new SMSenderFakeService(),
+                default => new SMSenderService(),
+            };
+        });
+    }
 
     /**
      * Get the services provided by the provider.

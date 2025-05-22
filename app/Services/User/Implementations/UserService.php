@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\User\Implementations\Implementations;
+namespace App\Services\User\Implementations;
 
 use App\Http\Requests\User\CodeRequest;
 use App\Http\Requests\User\LoginUserRequest;
@@ -26,6 +26,9 @@ class UserService implements UserServiceInterface
         Cache::put('sms_code_' . $phoneNumber, $code, now()->addMinutes(10));
 
         if ($isSent) {
+            if (config('sms.driver') === 'fake') {
+                return response()->json(['message' => 'Code sent successfully!', 'code' => $code]);
+            }
             return response()->json(['message' => 'Code sent successfully!']);
         } else {
             return response()->json(['message' => 'Code not sent!'], 500);
