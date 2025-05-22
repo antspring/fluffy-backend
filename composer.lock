@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5de2fe6fb335d798598c7e143f07c56",
+    "content-hash": "aeabf9699987d0b3153b09a1b39464f1",
     "packages": [
         {
             "name": "brick/math",
@@ -3349,6 +3349,40 @@
                 }
             ],
             "time": "2024-04-27T21:32:50+00:00"
+        },
+        {
+            "name": "smsaero/smsaero_api",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smsaero/smsaero_api.git",
+                "reference": "139faddca2ad480f7d8b5215f93f9a1e7ea7e106"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smsaero/smsaero_api/zipball/139faddca2ad480f7d8b5215f93f9a1e7ea7e106",
+                "reference": "139faddca2ad480f7d8b5215f93f9a1e7ea7e106",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SmsAero\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Библиотека для работы с API сервиса smsaero.ru",
+            "support": {
+                "issues": "https://github.com/smsaero/smsaero_api/issues",
+                "source": "https://github.com/smsaero/smsaero_api/tree/v1.0.0"
+            },
+            "time": "2023-03-28T00:46:01+00:00"
         },
         {
             "name": "spatie/laravel-permission",

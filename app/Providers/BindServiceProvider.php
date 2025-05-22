@@ -12,6 +12,10 @@ use App\Repositories\User\Contracts\UserRepositoryInterface;
 use App\Repositories\User\Implementations\UserRepository;
 use App\Services\Product\Contracts\ProductServiceInterface;
 use App\Services\Product\Implementations\ProductService;
+use App\Services\SMSender\Contracts\SMSenderServiceInterface;
+use App\Services\SMSender\Implementations\SMSenderService;
+use App\Services\User\Contracts\UserServiceInterface;
+use App\Services\User\Implementations\Implementations\UserService;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +27,8 @@ class BindServiceProvider extends ServiceProvider implements DeferrableProvider
         ProductRepositoryInterface::class => ProductRepository::class,
         ProductServiceInterface::class => ProductService::class,
         UserRepositoryInterface::class => UserRepository::class,
+        UserServiceInterface::class => UserService::class,
+        SMSenderServiceInterface::class => SMSenderService::class,
     ];
 
     /**
@@ -38,6 +44,8 @@ class BindServiceProvider extends ServiceProvider implements DeferrableProvider
             ProductRepositoryInterface::class,
             ProductServiceInterface::class,
             UserRepositoryInterface::class,
+            UserServiceInterface::class,
+            SMSenderServiceInterface::class,
         ];
     }
 }
