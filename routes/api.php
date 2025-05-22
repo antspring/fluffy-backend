@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\ResourceRoleMiddleware;
@@ -20,6 +21,10 @@ Route::prefix('/v1/')->group(function () {
             Route::apiResource('product', ProductController::class)->only(['store', 'update', 'destroy']);
             Route::apiResource('category', CategoryController::class)->only(['store', 'update', 'destroy']);
         });
+
+        Route::middleware('role:admin')->group(function () {
+            Route::post('register-employee', [EmployeeController::class, 'register']);
+        });
     });
 
     Route::apiResource('ingredient', IngredientController::class)->only(['index', 'show']);
@@ -29,4 +34,6 @@ Route::prefix('/v1/')->group(function () {
     Route::post('send-code', [AuthController::class, 'sendCode']);
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
+
+    Route::post('login-employee', [EmployeeController::class, 'login']);
 });

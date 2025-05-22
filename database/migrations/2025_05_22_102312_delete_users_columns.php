@@ -24,9 +24,9 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('email')->after('name')->unique();
+            $table->string('email')->after('name')->default('null')->unique();
             $table->timestamp('email_verified_at')->nullable()->after('name');
-            $table->string('password');
+            $table->string('password')->default('null');
         });
     }
 };
