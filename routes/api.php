@@ -4,20 +4,29 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\ProductController;
+use App\Http\Middleware\ResourceRoleMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
 Route::prefix('/v1/')->group(function () {
-    Route::apiResource('category', CategoryController::class);
-    Route::apiResource('ingredient', IngredientController::class);
-    Route::apiResource('product', ProductController::class);
+
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        Route::get('/user', function (Request $request) {
+            return $request->user();
+        });
+
+        Route::middleware(ResourceRoleMiddleware::class)->group(function () {
+            Route::apiResource('ingredient', IngredientController::class)->only(['store', 'update', 'destroy']);
+            Route::apiResource('product', ProductController::class)->only(['store', 'update', 'destroy']);
+            Route::apiResource('category', CategoryController::class)->only(['store', 'update', 'destroy']);
+        });
+    });
+
+    Route::apiResource('ingredient', IngredientController::class)->only(['index', 'show']);
+    Route::apiResource('product', ProductController::class)->only(['index', 'show']);
+    Route::apiResource('category', CategoryController::class)->only(['index', 'show']);
 
     Route::post('send-code', [AuthController::class, 'sendCode']);
-
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
 });
