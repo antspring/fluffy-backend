@@ -8,8 +8,15 @@ use App\Repositories\Ingredient\Contracts\IngredientRepositoryInterface;
 use App\Repositories\Ingredient\Implementations\IngredientRepository;
 use App\Repositories\Product\Contracts\ProductRepositoryInterface;
 use App\Repositories\Product\Implementations\ProductRepository;
+use App\Repositories\User\Contracts\UserRepositoryInterface;
+use App\Repositories\User\Implementations\UserRepository;
 use App\Services\Product\Contracts\ProductServiceInterface;
 use App\Services\Product\Implementations\ProductService;
+use App\Services\SMSender\Contracts\SMSenderServiceInterface;
+use App\Services\SMSender\Implementations\SMSenderFakeService;
+use App\Services\SMSender\Implementations\SMSenderService;
+use App\Services\User\Contracts\UserServiceInterface;
+use App\Services\User\Implementations\UserService;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,7 +27,19 @@ class BindServiceProvider extends ServiceProvider implements DeferrableProvider
         IngredientRepositoryInterface::class => IngredientRepository::class,
         ProductRepositoryInterface::class => ProductRepository::class,
         ProductServiceInterface::class => ProductService::class,
+        UserRepositoryInterface::class => UserRepository::class,
+        UserServiceInterface::class => UserService::class,
     ];
+
+    public function register(): void
+    {
+        $this->app->bind(SMSenderServiceInterface::class, function () {
+            return match (config('sms.driver')) {
+                'fake' => new SMSenderFakeService(),
+                default => new SMSenderService(),
+            };
+        });
+    }
 
     /**
      * Get the services provided by the provider.
@@ -34,6 +53,9 @@ class BindServiceProvider extends ServiceProvider implements DeferrableProvider
             IngredientRepositoryInterface::class,
             ProductRepositoryInterface::class,
             ProductServiceInterface::class,
+            UserRepositoryInterface::class,
+            UserServiceInterface::class,
+            SMSenderServiceInterface::class,
         ];
     }
 }

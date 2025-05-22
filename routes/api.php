@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\ProductController;
@@ -14,4 +15,9 @@ Route::prefix('/v1/')->group(function () {
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('ingredient', IngredientController::class);
     Route::apiResource('product', ProductController::class);
+
+    Route::post('send-code', [AuthController::class, 'sendCode']);
+
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
 });
