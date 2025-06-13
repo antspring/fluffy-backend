@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Order\StoreOrderRequest;
+use App\Models\Order\Order;
 use App\Services\Order\Contracts\OrderServiceInterface;
 
 class OrderController extends Controller
@@ -16,5 +17,10 @@ class OrderController extends Controller
         $order = $this->orderService->create($request);
 
         return $order->toResource();
+    }
+
+    public function cancelOrder(Order $order)
+    {
+        $this->orderService->cancelOrder($order);
     }
 }

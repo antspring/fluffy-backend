@@ -28,6 +28,7 @@ Route::prefix('/v1/')->group(function () {
         });
 
         Route::post('order', [OrderController::class, 'store']);
+        Route::patch('order-cancel/{order}', [OrderController::class, 'cancelOrder'])->can('update', 'order');
     });
 
     Route::apiResource('ingredient', IngredientController::class)->only(['index', 'show']);

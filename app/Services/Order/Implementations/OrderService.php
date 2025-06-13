@@ -3,6 +3,8 @@
 namespace App\Services\Order\Implementations;
 
 use App\Http\Requests\Order\StoreOrderRequest;
+use App\Models\Order\Order;
+use App\Models\Order\Status;
 use App\Repositories\Order\Contracts\OrderRepositoryInterface;
 use App\Services\Order\Contracts\OrderServiceInterface;
 use App\Services\Product\Contracts\ProductServiceInterface;
@@ -37,5 +39,10 @@ class OrderService implements OrderServiceInterface
         return $products->sum(function ($product) use ($quantities) {
             return $product['price'] * $quantities[$product['id']]['product_quantity'];
         });
+    }
+
+    public function cancelOrder(Order $order)
+    {
+        $order->update(['status_id' => Status::CANCELED]);
     }
 }
