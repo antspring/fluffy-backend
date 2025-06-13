@@ -78,6 +78,19 @@ class ProductService implements ProductServiceInterface
         return $this->productRepository->where($column, $value);
     }
 
+    public function subtractionAmount($productsQuantity)
+    {
+        $products = $this->productRepository->getMany(array_keys($productsQuantity));
+
+        foreach ($products as $product) {
+            $product->amount = max(0, $product->amount - $productsQuantity[$product->id]['product_quantity']);
+        }
+
+        $this->productRepository->subtractionAmount($products->toArray());
+
+        return $products;
+    }
+
     private function syncIngredients(Product $product, array $ingredients): array|bool
     {
         if (!empty($ingredients)) {

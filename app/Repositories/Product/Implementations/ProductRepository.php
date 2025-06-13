@@ -12,4 +12,14 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         $this->model = new Product();
     }
+
+    public function getMany(array $ids)
+    {
+        return $this->model->whereIn('id', $ids)->get();
+    }
+
+    public function subtractionAmount(array $products)
+    {
+        $this->model->upsert($products, ['id'], ['amount']);
+    }
 }

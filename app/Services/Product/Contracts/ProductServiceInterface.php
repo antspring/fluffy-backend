@@ -19,4 +19,6 @@ interface ProductServiceInterface
     public function delete(Product $product);
 
     public function where($column, $value);
+
+    public function subtractionAmount(array $productsQuantity);
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\ResourceRoleMiddleware;
 use Illuminate\Http\Request;
@@ -25,6 +26,8 @@ Route::prefix('/v1/')->group(function () {
         Route::middleware('role:admin')->group(function () {
             Route::post('register-employee', [EmployeeController::class, 'register']);
         });
+
+        Route::post('order', [OrderController::class, 'store']);
     });
 
     Route::apiResource('ingredient', IngredientController::class)->only(['index', 'show']);
