@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Order\StoreOrderRequest;
+use App\Http\Resources\Order\OrderWithProductsResource;
 use App\Models\Order\Order;
+use App\Repositories\User\Contracts\UserRepositoryInterface;
 use App\Services\Order\Contracts\OrderServiceInterface;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function __construct(private readonly OrderServiceInterface $orderService)
+    public function __construct(private readonly OrderServiceInterface $orderService, private readonly UserRepositoryInterface $userRepository)
     {
     }
 
@@ -27,5 +30,12 @@ class OrderController extends Controller
     public function completeOrder(Order $order)
     {
         $this->orderService->completeOrder($order);
+    }
+
+    public function userOrders(Request $request)
+    {
+        $orders = $this->userRepository->getOrdersWithProducts($request->user());
+
+        return OrderWithProductsResource::collection($orders);
     }
 }

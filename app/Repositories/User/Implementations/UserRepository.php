@@ -12,4 +12,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         $this->model = new User();
     }
+
+    public function getOrdersWithProducts(User $user)
+    {
+        return $user->orders()->orderBy('created_at', 'desc')->with('products')->get();
+    }
 }
