@@ -29,6 +29,7 @@ Route::prefix('/v1/')->group(function () {
 
         Route::post('order', [OrderController::class, 'store']);
         Route::patch('order-cancel/{order}', [OrderController::class, 'cancelOrder'])->can('update', 'order');
+        Route::patch('order-complete/{order}', [OrderController::class, 'completeOrder'])->middleware('role:admin|employee');
     });
 
     Route::apiResource('ingredient', IngredientController::class)->only(['index', 'show']);

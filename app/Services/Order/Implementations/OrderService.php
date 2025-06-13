@@ -45,4 +45,9 @@ class OrderService implements OrderServiceInterface
     {
         $order->update(['status_id' => Status::CANCELED]);
     }
+
+    public function completeOrder(Order $order)
+    {
+        $order->update(['status_id' => Status::READY]);
+    }
 }

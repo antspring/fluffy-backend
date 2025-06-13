@@ -10,4 +10,6 @@ interface OrderServiceInterface
     public function create(StoreOrderRequest $request);
 
     public function cancelOrder(Order $order);
+
+    public function completeOrder(Order $order);
 }

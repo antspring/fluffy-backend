@@ -23,4 +23,9 @@ class OrderController extends Controller
     {
         $this->orderService->cancelOrder($order);
     }
+
+    public function completeOrder(Order $order)
+    {
+        $this->orderService->completeOrder($order);
+    }
 }
