@@ -25,6 +25,11 @@ class OrderController extends Controller
         return OrderWithProductsResource::collection($orders);
     }
 
+    public function show(Order $order)
+    {
+        return new OrderWithProductsResource($order);
+    }
+
     public function store(StoreOrderRequest $request)
     {
         $order = $this->orderService->create($request);

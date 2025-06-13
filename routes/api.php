@@ -32,6 +32,7 @@ Route::prefix('/v1/')->group(function () {
         Route::patch('order-complete/{order}', [OrderController::class, 'completeOrder'])->middleware('role:admin|employee');
         Route::get('user-orders', [OrderController::class, 'userOrders']);
         Route::get('order', [OrderController::class, 'index'])->middleware('role:admin|employee');
+        Route::get('order/{order}', [OrderController::class, 'show'])->middleware('role:admin|employee');
     });
 
     Route::apiResource('ingredient', IngredientController::class)->only(['index', 'show']);
