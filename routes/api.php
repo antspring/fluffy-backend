@@ -31,6 +31,7 @@ Route::prefix('/v1/')->group(function () {
         Route::patch('order-cancel/{order}', [OrderController::class, 'cancelOrder'])->can('update', 'order');
         Route::patch('order-complete/{order}', [OrderController::class, 'completeOrder'])->middleware('role:admin|employee');
         Route::get('user-orders', [OrderController::class, 'userOrders']);
+        Route::get('order', [OrderController::class, 'index'])->middleware('role:admin|employee');
     });
 
     Route::apiResource('ingredient', IngredientController::class)->only(['index', 'show']);

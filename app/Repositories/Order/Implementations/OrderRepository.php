@@ -17,4 +17,9 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
     {
         $concreteOrder->products()->attach($attachableProducts);
     }
+
+    public function getAllSortedOrdersWithProducts()
+    {
+        return $this->model->orderBy('created_at', 'desc')->with('products')->get();
+    }
 }

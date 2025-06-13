@@ -5,14 +5,24 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Resources\Order\OrderWithProductsResource;
 use App\Models\Order\Order;
+use App\Repositories\Order\Contracts\OrderRepositoryInterface;
 use App\Repositories\User\Contracts\UserRepositoryInterface;
 use App\Services\Order\Contracts\OrderServiceInterface;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function __construct(private readonly OrderServiceInterface $orderService, private readonly UserRepositoryInterface $userRepository)
+    public function __construct(private readonly OrderServiceInterface    $orderService,
+                                private readonly UserRepositoryInterface  $userRepository,
+                                private readonly OrderRepositoryInterface $orderRepository)
     {
+    }
+
+    public function index()
+    {
+        $orders = $this->orderRepository->getAllSortedOrdersWithProducts();
+
+        return OrderWithProductsResource::collection($orders);
     }
 
     public function store(StoreOrderRequest $request)

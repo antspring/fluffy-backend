@@ -8,4 +8,6 @@ use App\Repositories\Contracts\RepositoryInterface;
 interface OrderRepositoryInterface extends RepositoryInterface
 {
     public function attachProducts(Order $concreteOrder, array $attachableProducts);
+
+    public function getAllSortedOrdersWithProducts();
 }
