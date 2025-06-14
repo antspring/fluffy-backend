@@ -27,7 +27,11 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        return $this->productService->create($request)->toResource();
+        $result = $this->productService->create($request);
+        if ($result['success']) {
+            return $result['product']->toResource();
+        }
+        return response()->json(['message' => 'Ingredient not created', 'missing' => $result['missing']], 400);
     }
 
     /**
@@ -43,7 +47,13 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        return $this->productService->update($product, $request);
+        $result = $this->productService->update($product, $request);
+
+        if ($result['success']) {
+            return $result['success'];
+        }
+
+        return response()->json(['message' => 'Ingredient not created', 'missing' => $result['missing']], 400);
     }
 
     /**

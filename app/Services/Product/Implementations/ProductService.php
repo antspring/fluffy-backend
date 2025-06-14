@@ -40,10 +40,10 @@ class ProductService implements ProductServiceInterface
         $missing = $this->syncIngredients($product, $ingredients);
 
         if ($missing === true) {
-            return $product;
+            return ['success' => true, 'product' => $product];
         }
 
-        return response()->json(['message' => 'Ingredient not created', 'missing' => $missing]);
+        return ['success' => false, 'missing' => $missing];
     }
 
     public function update(Product $product, UpdateProductRequest $request)
@@ -61,10 +61,10 @@ class ProductService implements ProductServiceInterface
         $missing = $this->syncIngredients($product, $ingredients);
 
         if ($missing === true) {
-            return $product->update($data);
+            return ['success' => $product->update($data)];
         }
 
-        return response()->json(['message' => 'Ingredient not created', 'missing' => $missing]);
+        return ['success' => false, 'missing' => $missing];
     }
 
     public function delete(Product $product)
