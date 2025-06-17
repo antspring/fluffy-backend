@@ -26,7 +26,8 @@ class OrderService implements OrderServiceInterface
         $order = $this->orderRepository->create([
             'user_id' => $request->user()->id,
             'completion_datetime' => $request['completion_datetime'],
-            'price' => $this->getFullPrice($products, $attach)
+            'price' => $this->getFullPrice($products, $attach),
+            'comment' => $request['comment'],
         ]);
 
         $this->orderRepository->attachProducts($order, $attach);

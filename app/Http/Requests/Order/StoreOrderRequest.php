@@ -32,6 +32,7 @@ class StoreOrderRequest extends FormRequest
             'products' => 'required|array',
             'products.*.id' => 'required|integer|exists:products,id',
             'products.*.quantity' => 'required|integer|min:1',
+            'comment' => 'nullable|string',
         ];
     }
 
