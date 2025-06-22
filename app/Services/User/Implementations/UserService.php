@@ -26,12 +26,9 @@ class UserService implements UserServiceInterface
         Cache::put('sms_code_' . $phoneNumber, $code, now()->addMinutes(10));
 
         if ($isSent) {
-            if (config('sms.driver') === 'fake') {
-                return response()->json(['message' => 'Code sent successfully!', 'code' => $code]);
-            }
-            return response()->json(['message' => 'Code sent successfully!']);
+            return ['success' => true, 'code' => $code];
         } else {
-            return response()->json(['message' => 'Code not sent!'], 500);
+            return ['success' => false, 'message' => 'Code not sent!'];
         }
     }
 

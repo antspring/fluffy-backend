@@ -16,7 +16,13 @@ class AuthController extends Controller
 
     public function sendCode(CodeRequest $request)
     {
-        return $this->userServiceInterface->sendCode($request);
+        $result = $this->userServiceInterface->sendCode($request);
+
+        if ($result['success']) {
+            return response()->json(['message' => 'Code sent successfully!', 'code' => $result['code']]);
+        } else {
+            return response()->json(['message' => 'Code not sent!'], 500);
+        }
     }
 
     public function register(StoreUserRequest $request)
