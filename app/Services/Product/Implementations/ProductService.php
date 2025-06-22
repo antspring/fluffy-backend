@@ -107,8 +107,8 @@ class ProductService implements ProductServiceInterface
 
             foreach ($ingredients as $ingredient) {
                 $sync[$ingredient['id']] = [
-                    'quantity' => $ingredient['quantity'],
-                    'unit' => $ingredient['unit'],
+                    'quantity' => $ingredient['quantity'] ?? null,
+                    'unit' => $ingredient['unit'] ?? null,
                 ];
             }
 
