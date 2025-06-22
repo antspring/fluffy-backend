@@ -40,7 +40,7 @@ class UserService implements UserServiceInterface
         $isVerified = $this->verifyCode($phoneNumber, $code);
 
         if (!$isVerified) {
-            return response()->json(['message' => 'Code is not verified!']);
+            return ['success' => false];
         }
 
         $user = $this->userRepository->create($request->validated());
@@ -48,7 +48,7 @@ class UserService implements UserServiceInterface
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['token' => $token]);
+        return ['success' => true, 'token' => $token];
     }
 
     public function login(LoginUserRequest $request)
@@ -59,12 +59,12 @@ class UserService implements UserServiceInterface
         $isVerified = $this->verifyCode($phoneNumber, $code);
 
         if (!$isVerified) {
-            return response()->json(['message' => 'Code is not verified!!'], 400);
+            return ['success' => false];
         }
 
         $user = $this->userRepository->where('phone_number', $request->input('phone_number'))->first();
         $token = $user->createToken('auth_token')->plainTextToken;
-        return response()->json(['token' => $token]);
+        return ['success' => true, 'token' => $token];
     }
 
     private function verifyCode($phoneNumber, $code): bool

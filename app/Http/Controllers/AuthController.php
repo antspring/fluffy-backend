@@ -27,11 +27,23 @@ class AuthController extends Controller
 
     public function register(StoreUserRequest $request)
     {
-        return $this->userServiceInterface->register($request);
+        $result = $this->userServiceInterface->register($request);
+
+        if ($result['success']) {
+            return response()->json(['token' => $result['token']]);
+        } else {
+            return response()->json(['message' => 'Code is not verified!'], 400);
+        }
     }
 
     public function login(LoginUserRequest $request)
     {
-        return $this->userServiceInterface->login($request);
+        $result = $this->userServiceInterface->login($request);
+
+        if ($result['success']) {
+            return response()->json(['token' => $result['token']]);
+        } else {
+            return response()->json(['message' => 'Code is not verified!'], 400);
+        }
     }
 }
